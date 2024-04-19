@@ -6,6 +6,7 @@ import com.boot.demo.dto.UserFormDto;
 import com.boot.demo.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
     private final UserService userService;
 
@@ -47,4 +49,23 @@ public class AuthController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
+
+    //logoutAPI
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(TokenRequest request){
+        try {
+            userService.logout(request);
+        }catch (Exception e){
+            log.info(e.getMessage());
+        }
+        return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+
+
+
+
+
+
+
 }

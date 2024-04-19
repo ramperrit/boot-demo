@@ -4,6 +4,7 @@ import com.boot.demo.entity.RefreshToken;
 import com.boot.demo.entity.User;
 import com.boot.demo.repository.RefreshTokenRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,13 @@ public class RefreshTokenService {
     public void saveRefreshToken(RefreshToken refreshToken){
         refreshTokenRepository.save(refreshToken);
     }
+
+    public void removeToken(@Valid String refreshToken){
+        RefreshToken findToken = refreshTokenRepository
+                .findByRefreshToken(refreshToken)
+                .orElseThrow(EntityNotFoundException::new);
+        refreshTokenRepository.delete(findToken);
+    }
+
+
 }

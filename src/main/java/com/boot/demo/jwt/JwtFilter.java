@@ -21,9 +21,9 @@ public class JwtFilter extends OncePerRequestFilter { //필터체인에 한번�
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getAccessToken(request.getHeader(HEADER_AUTHORIZATION)); //토큰
+        String token = getAccessToken(request.getHeader(HEADER_AUTHORIZATION)); //토큰가져옴
 
-        if (tokenProvider.validateToken(token)){
+        if (token != null && tokenProvider.validateToken(token)){
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter { //필터체인에 한번�
     }
 
     private String getAccessToken(String authoricationHeader){
-        if(authoricationHeader != null && authoricationHeader.startsWith(TOKEN_PREFIX)){
+        if(authoricationHeader != null && authoricationHeader.startsWith(TOKEN_PREFIX)){ //받을때 Bearer 검증
             return authoricationHeader.substring(TOKEN_PREFIX.length());  //받을때 Bearer 땜
         }
         return null;

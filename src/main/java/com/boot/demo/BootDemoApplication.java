@@ -17,13 +17,13 @@ public class BootDemoApplication {
     }
 
     //서버 통신시 주석처리
-    @Bean
-    public WebMvcConfigurer corsConfigurer(){
-        return new WebMvcConfigurer(){
-            @Override
-            public void addCorsMappings(CorsRegistry registry){
-                registry.addMapping("/**").allowedOrigins(frontDomain);
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer(){
+//        return new WebMvcConfigurer(){
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry){
+//                registry.addMapping("/**").allowedOrigins(frontDomain);
+//            }
+//        };
+//    }
 }

@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
         String accessToken = tokenProvider.createAccessToken(user, Duration.ofHours(2));
         String newRefreshToken = refreshToken.update(tokenProvider.createRefreshToken(Duration.ofDays(1))).getRefreshToken();
 
-        return new TokenResponse(accessToken, newRefreshToken);
+        return new TokenResponse(accessToken, newRefreshToken, user.getRole().getKey());
 
     }
 
@@ -86,15 +86,39 @@ public class UserService implements UserDetailsService {
         //2-1. 기존에 리프레시 토큰이 없다면 토큰을 생성-저장
         if (existRefreshToken == null) {
             refreshTokenService.saveRefreshToken(new RefreshToken(user, newRefreshToken));
-        } else {//2-2. 이미 존재한다면 새로 발급하여 update
+        } else {
+            //2-2. 이미 존재한다면 새로 발급하여 update
             existRefreshToken.update(newRefreshToken);
         }
 
         //3. 엑세스 토큰을 발급하고
         String accessToken = tokenProvider.createAccessToken(user, Duration.ofHours(2));
 
-        return new TokenResponse(accessToken, newRefreshToken);
+        return new TokenResponse(accessToken, newRefreshToken, user.getRole().getKey());
 
     }
+
+    public void logout(TokenRequest request){
+        refreshTokenService.removeToken(request.getRefreshToken());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
